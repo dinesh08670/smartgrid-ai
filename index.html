@@ -1,822 +1,641 @@
-!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>SMARTGRID AI</title>
-
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#08111f">
+  <meta name="description" content="SmartGrid AI — intelligent community microgrid monitoring, optimization and peer-to-peer energy management.">
+  <title>SmartGrid AI | Microgrid Operations</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+  <a class="skip-link" href="#main">Skip to dashboard</a>
 
-  <header class="topbar">
-
-    <div class="brand">
-      <div class="logo">⚡</div>
-
-      <div>
-        <h1>SMARTGRID <span>AI</span></h1>
-        <p>Community Microgrid Management Platform</p>
-      </div>
-    </div>
-
-    <div class="top-actions">
-
-      <div class="live">
-        <span></span>
-        LIVE SYSTEM
-      </div>
-
-      <button id="simulationBtn" onclick="toggleSimulation()">
-        ⚡ Simulate Peak Demand
-      </button>
-
-    </div>
-
-  </header>
-
-
-  <main>
-
-    <!-- HERO -->
-
-    <section class="hero">
-
-      <div>
-
-        <div class="eyebrow">
-          🧠 AI-POWERED ENERGY ORCHESTRATION
-        </div>
-
-        <h2>
-          Energy intelligence for
-          <br>
-          <span>resilient communities.</span>
-        </h2>
-
-        <p>
-          Real-time monitoring, AI load balancing and peer-to-peer
-          energy trading for decentralized microgrids.
-        </p>
-
-      </div>
-
-
-      <div class="community-card">
-
-        <div class="community-icon">
-          👥
-        </div>
-
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand" aria-label="SmartGrid AI">
+        <div class="brand-mark" aria-hidden="true">⚡</div>
         <div>
-          <small>COMMUNITY</small>
-          <strong>GreenVillage</strong>
-          <span>100 connected households</span>
+          <div class="brand-name">SMARTGRID <span>AI</span></div>
+          <div class="brand-subtitle">Community Microgrid Operations</div>
         </div>
-
       </div>
 
-    </section>
-
-
-    <!-- AI ALERT -->
-
-    <div id="alertBanner" class="alert-banner hidden">
-
-      <div class="alert-icon">
-        🧠
+      <div class="topbar-actions">
+        <div class="system-state" role="status" aria-live="polite">
+          <span class="pulse-dot" aria-hidden="true"></span>
+          <span id="systemState">SYSTEM ONLINE</span>
+        </div>
+        <div class="clock" id="systemClock">--:--:--</div>
+        <button class="button button-primary" id="simulationBtn" type="button">
+          <span aria-hidden="true">⚡</span>
+          <span id="simulationLabel">Simulate peak</span>
+        </button>
       </div>
-
-      <div>
-
-        <strong>AI RESPONSE ACTIVE</strong>
-
-        <p>
-          Peak demand detected. Battery support and P2P energy
-          matching have been activated.
-        </p>
-
-      </div>
-
-      <div class="alert-status">
-
-        GRID STABILITY
-
-        <strong id="alertStability">94%</strong>
-
-      </div>
-
-    </div>
-
-
-    <!-- METRICS -->
-
-    <section class="stats-grid">
-
-      <div class="metric-card">
-
-        <div class="metric-icon yellow">
-          ☀️
-        </div>
-
-        <div class="metric-title">
-          Solar Generation
-        </div>
-
-        <div class="metric-value">
-          <span id="solarValue">86</span>
-          <small>kW</small>
-        </div>
-
-        <div class="change positive">
-          ↗ +12.4%
-        </div>
-
-      </div>
-
-
-      <div class="metric-card">
-
-        <div class="metric-icon blue">
-          ⚡
-        </div>
-
-        <div class="metric-title">
-          Community Demand
-        </div>
-
-        <div class="metric-value">
-          <span id="demandValue">72</span>
-          <small>kW</small>
-        </div>
-
-        <div id="demandChange" class="change positive">
-          ↘ -3.2%
-        </div>
-
-      </div>
-
-
-      <div class="metric-card">
-
-        <div class="metric-icon green">
-          🔋
-        </div>
-
-        <div class="metric-title">
-          Battery Storage
-        </div>
-
-        <div class="metric-value">
-          <span id="batteryValue">78</span>
-          <small>%</small>
-        </div>
-
-        <div class="progress">
-          <div id="batteryProgress" style="width:78%"></div>
-        </div>
-
-        <div class="change positive">
-          ↗ +4.8%
-        </div>
-
-      </div>
-
-
-      <div class="metric-card">
-
-        <div class="metric-icon purple">
-          🛡️
-        </div>
-
-        <div class="metric-title">
-          Grid Stability
-        </div>
-
-        <div class="metric-value">
-          <span id="stabilityValue">98</span>
-          <small>%</small>
-        </div>
-
-        <div class="change positive">
-          ● Optimal
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- MAIN DASHBOARD -->
-
-    <section class="dashboard-grid">
-
-
-      <!-- FORECAST -->
-
-      <div class="panel">
-
-        <div class="panel-header">
-
-          <div>
-            <h3>Energy Forecast</h3>
-            <p>AI prediction · next 24 hours</p>
-          </div>
-
-          <div class="legend">
-
-            <span>
-              <i class="solar-dot"></i>
-              Solar
-            </span>
-
-            <span>
-              <i class="demand-dot"></i>
-              Demand
-            </span>
-
-          </div>
-
-        </div>
-
-
-        <div class="chart">
-
-          <div class="chart-grid">
-
-            <div class="chart-label">120</div>
-            <div class="chart-label">90</div>
-            <div class="chart-label">60</div>
-            <div class="chart-label">30</div>
-            <div class="chart-label">0</div>
-
-          </div>
-
-
-          <svg
-            id="chart"
-            viewBox="0 0 800 300"
-            preserveAspectRatio="none"
-          >
-
-            <defs>
-
-              <linearGradient
-                id="solarGradient"
-                x1="0"
-                y1="0"
-                x2="0"
-                y2="1"
-              >
-
-                <stop
-                  offset="0%"
-                  stop-color="#facc15"
-                  stop-opacity=".35"
-                />
-
-                <stop
-                  offset="100%"
-                  stop-color="#facc15"
-                  stop-opacity="0"
-                />
-
-              </linearGradient>
-
-              <linearGradient
-                id="demandGradient"
-                x1="0"
-                y1="0"
-                x2="0"
-                y2="1"
-              >
-
-                <stop
-                  offset="0%"
-                  stop-color="#38bdf8"
-                  stop-opacity=".25"
-                />
-
-                <stop
-                  offset="100%"
-                  stop-color="#38bdf8"
-                  stop-opacity="0"
-                />
-
-              </linearGradient>
-
-            </defs>
-
-
-            <path
-              id="solarArea"
-              class="area solar-area"
-              d=""
-            />
-
-            <path
-              id="demandArea"
-              class="area demand-area"
-              d=""
-            />
-
-            <polyline
-              id="solarLine"
-              class="chart-line solar-line"
-              points=""
-            />
-
-            <polyline
-              id="demandLine"
-              class="chart-line demand-line"
-              points=""
-            />
-
-          </svg>
-
-
-          <div class="chart-times">
-
-            <span>00:00</span>
-            <span>04:00</span>
-            <span>08:00</span>
-            <span>12:00</span>
-            <span>16:00</span>
-            <span>20:00</span>
-            <span>24:00</span>
-
-          </div>
-
-        </div>
-
-      </div>
-
-
-      <!-- AI PANEL -->
-
-      <div class="panel ai-panel">
-
-        <div class="panel-header">
-
-          <div>
-            <h3>AI Energy Advisor</h3>
-            <p>Real-time optimization engine</p>
-          </div>
-
-          <div class="ai-status">
-            ● ACTIVE
-          </div>
-
-        </div>
-
-
-        <div class="ai-main">
-
-          <div class="ai-circle">
-            🧠
-          </div>
-
-          <h4 id="aiTitle">
-            System operating efficiently
-          </h4>
-
-          <p id="aiDescription">
-            Renewable generation is sufficient for current demand.
-            Battery reserves are being optimized for evening usage.
-          </p>
-
-        </div>
-
-
-        <div class="recommendations">
-
-          <div class="recommendation">
-
-            <div class="recommendation-icon">
-              🔋
-            </div>
-
-            <div>
-
-              <strong id="batteryRecommendation">
-                Reserve battery
-              </strong>
-
-              <p id="batteryText">
-                Keep 20% reserve for evening peak
-              </p>
-
-            </div>
-
-          </div>
-
-
-          <div class="recommendation">
-
-            <div class="recommendation-icon">
-              👥
-            </div>
-
-            <div>
-
-              <strong>
-                P2P matching
-              </strong>
-
-              <p>
-                6 households have surplus energy
-              </p>
-
-            </div>
-
-          </div>
-
-
-          <div class="recommendation">
-
-            <div class="recommendation-icon">
-              🌱
-            </div>
-
-            <div>
-
-              <strong>
-                Renewable priority
-              </strong>
-
-              <p>
-                <span id="renewableValue">91</span>%
-                renewable utilization
-              </p>
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- LOWER SECTION -->
-
-    <section class="lower-grid">
-
-
-      <!-- P2P MARKET -->
-
-      <div class="panel">
-
-        <div class="panel-header">
-
-          <div>
-
-            <h3>
-              Peer-to-Peer Energy Market
-            </h3>
-
-            <p>
-              Community energy exchange
-            </p>
-
-          </div>
-
-          <div class="market-status">
-            ● MARKET OPEN
-          </div>
-
-        </div>
-
-
-        <div class="trade-table">
-
-          <div class="table-head">
-
-            <span>SELLER</span>
-            <span>BUYER</span>
-            <span>ENERGY</span>
-            <span>PRICE</span>
-            <span>STATUS</span>
-
-          </div>
-
-
-          <div id="tradeRows">
-
-            <div class="trade-row">
-
-              <span>House A-104</span>
-              <span>Shop B-021</span>
-              <span>2.4 kWh</span>
-              <span>₹9.60</span>
-
-              <span>
-                <b>Completed</b>
-              </span>
-
-            </div>
-
-
-            <div class="trade-row">
-
-              <span>House C-118</span>
-              <span>House A-207</span>
-              <span>1.8 kWh</span>
-              <span>₹7.20</span>
-
-              <span>
-                <b>Completed</b>
-              </span>
-
-            </div>
-
-
-            <div class="trade-row">
-
-              <span>Solar Hub</span>
-              <span>Community Hall</span>
-              <span>4.2 kWh</span>
-              <span>₹16.80</span>
-
-              <span>
-                <b>Matched</b>
-              </span>
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-
-
-      <!-- SDG -->
-
-      <div class="panel">
-
-        <div class="panel-header">
-
-          <div>
-
-            <h3>SDG Impact</h3>
-
-            <p>
-              Sustainability metrics
-            </p>
-
-          </div>
-
-          <span class="leaf">
-            🌱
-          </span>
-
-        </div>
-
-
-        <div class="impact">
-
-          <div class="sdg-number">
-            07
-          </div>
-
-          <div class="impact-info">
-
-            <strong>
-              Affordable & Clean Energy
-            </strong>
-
-            <span>
-              Renewable energy utilization
-            </span>
-
-          </div>
-
-          <b>
-            91%
-          </b>
-
-        </div>
-
-
-        <div class="impact">
-
-          <div class="sdg-number">
-            09
-          </div>
-
-          <div class="impact-info">
-
-            <strong>
-              Innovation & Infrastructure
-            </strong>
-
-            <span>
-              Microgrid stability
-            </span>
-
-          </div>
-
-          <b>
-            98%
-          </b>
-
-        </div>
-
-
-        <div class="impact">
-
-          <div class="sdg-number">
-            11
-          </div>
-
-          <div class="impact-info">
-
-            <strong>
-              Sustainable Communities
-            </strong>
-
-            <span>
-              Connected households
-            </span>
-
-          </div>
-
-          <b>
-            100
-          </b>
-
-        </div>
-
-
-        <div class="impact">
-
-          <div class="sdg-number">
-            13
-          </div>
-
-          <div class="impact-info">
-
-            <strong>
-              Climate Action
-            </strong>
-
-            <span>
-              CO₂ avoided today
-            </span>
-
-          </div>
-
-          <b>
-            42 kg
-          </b>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- ENERGY FLOW -->
-
-    <section class="panel energy-flow">
-
-      <div class="panel-header">
-
-        <div>
-
-          <h3>
-            Live Energy Flow
-          </h3>
-
+    </header>
+
+    <main id="main" class="main">
+      <section class="hero" aria-labelledby="pageTitle">
+        <div class="hero-copy">
+          <div class="eyebrow"><span></span> AI-POWERED ENERGY ORCHESTRATION</div>
+          <h1 id="pageTitle">Energy intelligence for <em>resilient communities.</em></h1>
           <p>
-            Real-time community infrastructure
+            Monitor renewable generation, forecast demand, optimize storage and coordinate
+            community energy exchange from one operational view.
           </p>
-
         </div>
 
-        <span class="updated">
-          System synchronized
-        </span>
+        <aside class="community-card" aria-label="Community overview">
+          <div class="community-icon" aria-hidden="true">⌂</div>
+          <div>
+            <span class="label">COMMUNITY</span>
+            <strong>GreenVillage</strong>
+            <span class="muted">100 connected households</span>
+          </div>
+          <div class="community-health">
+            <span class="health-dot" aria-hidden="true"></span>
+            Healthy
+          </div>
+        </aside>
+      </section>
 
+      <section id="alertBanner" class="alert-banner hidden" role="alert" aria-live="assertive">
+        <div class="alert-symbol" aria-hidden="true">!</div>
+        <div class="alert-copy">
+          <strong>AI RESPONSE ACTIVE</strong>
+          <p>Peak demand detected. Battery support, load shifting and P2P matching are active.</p>
+        </div>
+        <div class="alert-stat">
+          <span>GRID STABILITY</span>
+          <strong id="alertStability">94%</strong>
+        </div>
+      </section>
+
+      <section class="metrics-grid" aria-label="Live system metrics">
+        <article class="metric-card">
+          <div class="metric-top">
+            <span class="metric-icon solar" aria-hidden="true">☀</span>
+            <span class="metric-kicker">GENERATION</span>
+          </div>
+          <div class="metric-name">Solar generation</div>
+          <div class="metric-value"><span id="solarValue">86</span><small>kW</small></div>
+          <div class="metric-footer positive"><span>↗</span> 12.4% vs. baseline</div>
+        </article>
+
+        <article class="metric-card">
+          <div class="metric-top">
+            <span class="metric-icon demand" aria-hidden="true">↯</span>
+            <span class="metric-kicker">LOAD</span>
+          </div>
+          <div class="metric-name">Community demand</div>
+          <div class="metric-value"><span id="demandValue">72</span><small>kW</small></div>
+          <div id="demandChange" class="metric-footer positive"><span>↘</span> 3.2% vs. baseline</div>
+        </article>
+
+        <article class="metric-card">
+          <div class="metric-top">
+            <span class="metric-icon battery" aria-hidden="true">▰</span>
+            <span class="metric-kicker">STORAGE</span>
+          </div>
+          <div class="metric-name">Battery state of charge</div>
+          <div class="metric-value"><span id="batteryValue">78</span><small>%</small></div>
+          <div class="progress-track" aria-label="Battery charge">
+            <div id="batteryProgress" class="progress-fill" style="width:78%"></div>
+          </div>
+          <div class="metric-footer positive"><span>↗</span> 4.8% today</div>
+        </article>
+
+        <article class="metric-card">
+          <div class="metric-top">
+            <span class="metric-icon stability" aria-hidden="true">✓</span>
+            <span class="metric-kicker">RELIABILITY</span>
+          </div>
+          <div class="metric-name">Grid stability</div>
+          <div class="metric-value"><span id="stabilityValue">98</span><small>%</small></div>
+          <div class="metric-footer positive"><span>●</span> Optimal operating range</div>
+        </article>
+      </section>
+
+      <section class="primary-grid">
+        <article class="panel forecast-panel">
+          <div class="panel-header">
+            <div>
+              <span class="section-kicker">FORECAST ENGINE</span>
+              <h2>Energy forecast</h2>
+              <p>AI prediction · next 24 hours</p>
+            </div>
+            <div class="legend" aria-label="Chart legend">
+              <span><i class="legend-dot solar-dot"></i> Solar</span>
+              <span><i class="legend-dot demand-dot"></i> Demand</span>
+            </div>
+          </div>
+
+          <div class="chart-wrap">
+            <div class="y-axis" aria-hidden="true">
+              <span>140</span><span>105</span><span>70</span><span>35</span><span>0</span>
+            </div>
+            <svg id="energyChart" class="energy-chart" viewBox="0 0 960 320" role="img"
+                 aria-label="Solar generation and community demand forecast chart">
+              <defs>
+                <linearGradient id="solarGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#facc15" stop-opacity=".24"/>
+                  <stop offset="100%" stop-color="#facc15" stop-opacity="0"/>
+                </linearGradient>
+                <linearGradient id="demandGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#38bdf8" stop-opacity=".16"/>
+                  <stop offset="100%" stop-color="#38bdf8" stop-opacity="0"/>
+                </linearGradient>
+                <filter id="softGlow">
+                  <feGaussianBlur stdDeviation="3" result="blur"/>
+                  <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                </filter>
+              </defs>
+              <g class="grid-lines" aria-hidden="true">
+                <line x1="0" y1="20" x2="960" y2="20"/>
+                <line x1="0" y1="87" x2="960" y2="87"/>
+                <line x1="0" y1="154" x2="960" y2="154"/>
+                <line x1="0" y1="221" x2="960" y2="221"/>
+                <line x1="0" y1="288" x2="960" y2="288"/>
+              </g>
+              <path id="solarArea" class="area solar-area" d=""></path>
+              <path id="demandArea" class="area demand-area" d=""></path>
+              <polyline id="solarLine" class="chart-line solar-line" points=""></polyline>
+              <polyline id="demandLine" class="chart-line demand-line" points=""></polyline>
+              <circle id="solarPoint" class="chart-point solar-point" cx="0" cy="0" r="4"></circle>
+              <circle id="demandPoint" class="chart-point demand-point" cx="0" cy="0" r="4"></circle>
+            </svg>
+            <div class="x-axis" aria-hidden="true">
+              <span>00:00</span><span>04:00</span><span>08:00</span><span>12:00</span>
+              <span>16:00</span><span>20:00</span><span>24:00</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="panel advisor-panel">
+          <div class="panel-header">
+            <div>
+              <span class="section-kicker">DECISION SUPPORT</span>
+              <h2>AI energy advisor</h2>
+              <p>Real-time optimization engine</p>
+            </div>
+            <span class="status-badge"><i></i> ACTIVE</span>
+          </div>
+
+          <div class="advisor-core">
+            <div class="ai-orb" aria-hidden="true"><span>AI</span></div>
+            <h3 id="aiTitle">System operating efficiently</h3>
+            <p id="aiDescription">
+              Renewable generation is sufficient for current demand. Battery reserves are being
+              optimized for evening usage.
+            </p>
+          </div>
+
+          <div class="recommendations">
+            <div class="recommendation">
+              <span class="recommendation-icon">▣</span>
+              <div>
+                <strong id="batteryRecommendation">Reserve battery</strong>
+                <p id="batteryRecommendationText">Keep 20% reserve for evening peak</p>
+              </div>
+              <span class="recommendation-state">READY</span>
+            </div>
+            <div class="recommendation">
+              <span class="recommendation-icon">⇄</span>
+              <div>
+                <strong>P2P matching</strong>
+                <p id="p2pText">6 households have surplus energy</p>
+              </div>
+              <span class="recommendation-state">ACTIVE</span>
+            </div>
+            <div class="recommendation">
+              <span class="recommendation-icon">✦</span>
+              <div>
+                <strong>Renewable priority</strong>
+                <p><span id="renewableValue">91</span>% renewable utilization</p>
+              </div>
+              <span class="recommendation-state">OPTIMAL</span>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="secondary-grid">
+        <article class="panel market-panel">
+          <div class="panel-header">
+            <div>
+              <span class="section-kicker">LOCAL ENERGY EXCHANGE</span>
+              <h2>Peer-to-peer energy market</h2>
+              <p>Community energy exchange · simulated transactions</p>
+            </div>
+            <span class="status-badge"><i></i> MARKET OPEN</span>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Seller</th><th>Buyer</th><th>Energy</th><th>Price</th><th>Status</th></tr>
+              </thead>
+              <tbody id="tradeRows">
+                <tr><td>House A-104</td><td>Shop B-021</td><td>2.4 kWh</td><td>₹9.60</td><td><span class="table-status complete">Completed</span></td></tr>
+                <tr><td>House C-118</td><td>House A-207</td><td>1.8 kWh</td><td>₹7.20</td><td><span class="table-status complete">Completed</span></td></tr>
+                <tr><td>Solar Hub</td><td>Community Hall</td><td>4.2 kWh</td><td>₹16.80</td><td><span class="table-status matched">Matched</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="panel impact-panel">
+          <div class="panel-header">
+            <div>
+              <span class="section-kicker">SUSTAINABILITY</span>
+              <h2>SDG impact</h2>
+              <p>Community outcomes</p>
+            </div>
+            <span class="impact-leaf" aria-hidden="true">♧</span>
+          </div>
+
+          <div class="impact-list">
+            <div class="impact-row"><span class="sdg-number">07</span><div><strong>Affordable & Clean Energy</strong><small>Renewable utilization</small></div><b id="sdgRenewable">91%</b></div>
+            <div class="impact-row"><span class="sdg-number">09</span><div><strong>Innovation & Infrastructure</strong><small>Microgrid stability</small></div><b id="sdgStability">98%</b></div>
+            <div class="impact-row"><span class="sdg-number">11</span><div><strong>Sustainable Communities</strong><small>Connected households</small></div><b>100</b></div>
+            <div class="impact-row"><span class="sdg-number">13</span><div><strong>Climate Action</strong><small>CO₂ avoided today</small></div><b>42 kg</b></div>
+          </div>
+        </article>
+      </section>
+
+      <section class="panel energy-flow-panel">
+        <div class="panel-header">
+          <div>
+            <span class="section-kicker">SYSTEM TOPOLOGY</span>
+            <h2>Live energy flow</h2>
+            <p>Real-time community infrastructure</p>
+          </div>
+          <span class="sync-status"><i></i> Synchronized</span>
+        </div>
+
+        <div class="flow" aria-label="Energy flow from solar through AI controller to battery and community">
+          <div class="flow-node">
+            <div class="flow-icon solar" aria-hidden="true">☀</div>
+            <strong>Solar farm</strong>
+            <span id="flowSolar">86 kW</span>
+          </div>
+          <div class="flow-connector"><span></span><b>›</b></div>
+          <div class="flow-node active-node">
+            <div class="flow-icon ai" aria-hidden="true">AI</div>
+            <strong>AI controller</strong>
+            <span>Optimizing</span>
+          </div>
+          <div class="flow-connector"><span></span><b>›</b></div>
+          <div class="flow-node">
+            <div class="flow-icon battery" aria-hidden="true">▰</div>
+            <strong>Battery</strong>
+            <span id="flowBattery">78%</span>
+          </div>
+          <div class="flow-connector"><span></span><b>›</b></div>
+          <div class="flow-node">
+            <div class="flow-icon demand" aria-hidden="true">⌂</div>
+            <strong>Community</strong>
+            <span id="flowDemand">72 kW</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="disclaimer">
+        <span>Prototype environment</span>
+        <p>All energy values, forecasts, recommendations and transactions are simulated for demonstration and educational purposes.</p>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>SMARTGRID AI · Operations dashboard v2.0</span>
+      <span>SDG 7 · 9 · 11 · 13</span>
+    </footer>
+  </div>
+
+  <script src="script.js" defer></script>
+</body>
+</html><!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#08111f">
+  <meta name="description" content="SmartGrid AI — intelligent community microgrid monitoring, optimization and peer-to-peer energy management.">
+  <title>SmartGrid AI | Microgrid Operations</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to dashboard</a>
+
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand" aria-label="SmartGrid AI">
+        <div class="brand-mark" aria-hidden="true">⚡</div>
+        <div>
+          <div class="brand-name">SMARTGRID <span>AI</span></div>
+          <div class="brand-subtitle">Community Microgrid Operations</div>
+        </div>
       </div>
 
-
-      <div class="flow">
-
-
-        <div class="flow-node">
-
-          <div class="flow-icon yellow">
-            ☀️
-          </div>
-
-          <strong>
-            Solar Farm
-          </strong>
-
-          <span id="flowSolar">
-            86 kW
-          </span>
-
+      <div class="topbar-actions">
+        <div class="system-state" role="status" aria-live="polite">
+          <span class="pulse-dot" aria-hidden="true"></span>
+          <span id="systemState">SYSTEM ONLINE</span>
         </div>
-
-
-        <div class="flow-line">
-          <span></span>
-          →
-        </div>
-
-
-        <div class="flow-node">
-
-          <div class="flow-icon purple">
-            🧠
-          </div>
-
-          <strong>
-            AI Controller
-          </strong>
-
-          <span>
-            OPTIMIZING
-          </span>
-
-        </div>
-
-
-        <div class="flow-line">
-          <span></span>
-          →
-        </div>
-
-
-        <div class="flow-node">
-
-          <div class="flow-icon green">
-            🔋
-          </div>
-
-          <strong>
-            Battery
-          </strong>
-
-          <span id="flowBattery">
-            78%
-          </span>
-
-        </div>
-
-
-        <div class="flow-line">
-          <span></span>
-          →
-        </div>
-
-
-        <div class="flow-node">
-
-          <div class="flow-icon blue">
-            🏘️
-          </div>
-
-          <strong>
-            Community
-          </strong>
-
-          <span id="flowDemand">
-            72 kW
-          </span>
-
-        </div>
-
-
+        <div class="clock" id="systemClock">--:--:--</div>
+        <button class="button button-primary" id="simulationBtn" type="button">
+          <span aria-hidden="true">⚡</span>
+          <span id="simulationLabel">Simulate peak</span>
+        </button>
       </div>
+    </header>
 
-    </section>
+    <main id="main" class="main">
+      <section class="hero" aria-labelledby="pageTitle">
+        <div class="hero-copy">
+          <div class="eyebrow"><span></span> AI-POWERED ENERGY ORCHESTRATION</div>
+          <h1 id="pageTitle">Energy intelligence for <em>resilient communities.</em></h1>
+          <p>
+            Monitor renewable generation, forecast demand, optimize storage and coordinate
+            community energy exchange from one operational view.
+          </p>
+        </div>
 
-  </main>
+        <aside class="community-card" aria-label="Community overview">
+          <div class="community-icon" aria-hidden="true">⌂</div>
+          <div>
+            <span class="label">COMMUNITY</span>
+            <strong>GreenVillage</strong>
+            <span class="muted">100 connected households</span>
+          </div>
+          <div class="community-health">
+            <span class="health-dot" aria-hidden="true"></span>
+            Healthy
+          </div>
+        </aside>
+      </section>
 
+      <section id="alertBanner" class="alert-banner hidden" role="alert" aria-live="assertive">
+        <div class="alert-symbol" aria-hidden="true">!</div>
+        <div class="alert-copy">
+          <strong>AI RESPONSE ACTIVE</strong>
+          <p>Peak demand detected. Battery support, load shifting and P2P matching are active.</p>
+        </div>
+        <div class="alert-stat">
+          <span>GRID STABILITY</span>
+          <strong id="alertStability">94%</strong>
+        </div>
+      </section>
 
-  <footer>
+      <section class="metrics-grid" aria-label="Live system metrics">
+        <article class="metric-card">
+          <div class="metric-top">
+            <span class="metric-icon solar" aria-hidden="true">☀</span>
+            <span class="metric-kicker">GENERATION</span>
+          </div>
+          <div class="metric-name">Solar generation</div>
+          <div class="metric-value"><span id="solarValue">86</span><small>kW</small></div>
+          <div class="metric-footer positive"><span>↗</span> 12.4% vs. baseline</div>
+        </article>
 
-    <span>
-      SMARTGRID AI · Prototype v1.0
-    </span>
+        <article class="metric-card">
+          <div class="metric-top">
+            <span class="metric-icon demand" aria-hidden="true">↯</span>
+            <span class="metric-kicker">LOAD</span>
+          </div>
+          <div class="metric-name">Community demand</div>
+          <div class="metric-value"><span id="demandValue">72</span><small>kW</small></div>
+          <div id="demandChange" class="metric-footer positive"><span>↘</span> 3.2% vs. baseline</div>
+        </article>
 
-    <span>
-      SDG 7 · SDG 9 · SDG 11 · SDG 13
-    </span>
+        <article class="metric-card">
+          <div class="metric-top">
+            <span class="metric-icon battery" aria-hidden="true">▰</span>
+            <span class="metric-kicker">STORAGE</span>
+          </div>
+          <div class="metric-name">Battery state of charge</div>
+          <div class="metric-value"><span id="batteryValue">78</span><small>%</small></div>
+          <div class="progress-track" aria-label="Battery charge">
+            <div id="batteryProgress" class="progress-fill" style="width:78%"></div>
+          </div>
+          <div class="metric-footer positive"><span>↗</span> 4.8% today</div>
+        </article>
 
-  </footer>
+        <article class="metric-card">
+          <div class="metric-top">
+            <span class="metric-icon stability" aria-hidden="true">✓</span>
+            <span class="metric-kicker">RELIABILITY</span>
+          </div>
+          <div class="metric-name">Grid stability</div>
+          <div class="metric-value"><span id="stabilityValue">98</span><small>%</small></div>
+          <div class="metric-footer positive"><span>●</span> Optimal operating range</div>
+        </article>
+      </section>
 
+      <section class="primary-grid">
+        <article class="panel forecast-panel">
+          <div class="panel-header">
+            <div>
+              <span class="section-kicker">FORECAST ENGINE</span>
+              <h2>Energy forecast</h2>
+              <p>AI prediction · next 24 hours</p>
+            </div>
+            <div class="legend" aria-label="Chart legend">
+              <span><i class="legend-dot solar-dot"></i> Solar</span>
+              <span><i class="legend-dot demand-dot"></i> Demand</span>
+            </div>
+          </div>
 
-  <script src="script.js"></script>
+          <div class="chart-wrap">
+            <div class="y-axis" aria-hidden="true">
+              <span>140</span><span>105</span><span>70</span><span>35</span><span>0</span>
+            </div>
+            <svg id="energyChart" class="energy-chart" viewBox="0 0 960 320" role="img"
+                 aria-label="Solar generation and community demand forecast chart">
+              <defs>
+                <linearGradient id="solarGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#facc15" stop-opacity=".24"/>
+                  <stop offset="100%" stop-color="#facc15" stop-opacity="0"/>
+                </linearGradient>
+                <linearGradient id="demandGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#38bdf8" stop-opacity=".16"/>
+                  <stop offset="100%" stop-color="#38bdf8" stop-opacity="0"/>
+                </linearGradient>
+                <filter id="softGlow">
+                  <feGaussianBlur stdDeviation="3" result="blur"/>
+                  <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                </filter>
+              </defs>
+              <g class="grid-lines" aria-hidden="true">
+                <line x1="0" y1="20" x2="960" y2="20"/>
+                <line x1="0" y1="87" x2="960" y2="87"/>
+                <line x1="0" y1="154" x2="960" y2="154"/>
+                <line x1="0" y1="221" x2="960" y2="221"/>
+                <line x1="0" y1="288" x2="960" y2="288"/>
+              </g>
+              <path id="solarArea" class="area solar-area" d=""></path>
+              <path id="demandArea" class="area demand-area" d=""></path>
+              <polyline id="solarLine" class="chart-line solar-line" points=""></polyline>
+              <polyline id="demandLine" class="chart-line demand-line" points=""></polyline>
+              <circle id="solarPoint" class="chart-point solar-point" cx="0" cy="0" r="4"></circle>
+              <circle id="demandPoint" class="chart-point demand-point" cx="0" cy="0" r="4"></circle>
+            </svg>
+            <div class="x-axis" aria-hidden="true">
+              <span>00:00</span><span>04:00</span><span>08:00</span><span>12:00</span>
+              <span>16:00</span><span>20:00</span><span>24:00</span>
+            </div>
+          </div>
+        </article>
 
+        <article class="panel advisor-panel">
+          <div class="panel-header">
+            <div>
+              <span class="section-kicker">DECISION SUPPORT</span>
+              <h2>AI energy advisor</h2>
+              <p>Real-time optimization engine</p>
+            </div>
+            <span class="status-badge"><i></i> ACTIVE</span>
+          </div>
+
+          <div class="advisor-core">
+            <div class="ai-orb" aria-hidden="true"><span>AI</span></div>
+            <h3 id="aiTitle">System operating efficiently</h3>
+            <p id="aiDescription">
+              Renewable generation is sufficient for current demand. Battery reserves are being
+              optimized for evening usage.
+            </p>
+          </div>
+
+          <div class="recommendations">
+            <div class="recommendation">
+              <span class="recommendation-icon">▣</span>
+              <div>
+                <strong id="batteryRecommendation">Reserve battery</strong>
+                <p id="batteryRecommendationText">Keep 20% reserve for evening peak</p>
+              </div>
+              <span class="recommendation-state">READY</span>
+            </div>
+            <div class="recommendation">
+              <span class="recommendation-icon">⇄</span>
+              <div>
+                <strong>P2P matching</strong>
+                <p id="p2pText">6 households have surplus energy</p>
+              </div>
+              <span class="recommendation-state">ACTIVE</span>
+            </div>
+            <div class="recommendation">
+              <span class="recommendation-icon">✦</span>
+              <div>
+                <strong>Renewable priority</strong>
+                <p><span id="renewableValue">91</span>% renewable utilization</p>
+              </div>
+              <span class="recommendation-state">OPTIMAL</span>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="secondary-grid">
+        <article class="panel market-panel">
+          <div class="panel-header">
+            <div>
+              <span class="section-kicker">LOCAL ENERGY EXCHANGE</span>
+              <h2>Peer-to-peer energy market</h2>
+              <p>Community energy exchange · simulated transactions</p>
+            </div>
+            <span class="status-badge"><i></i> MARKET OPEN</span>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Seller</th><th>Buyer</th><th>Energy</th><th>Price</th><th>Status</th></tr>
+              </thead>
+              <tbody id="tradeRows">
+                <tr><td>House A-104</td><td>Shop B-021</td><td>2.4 kWh</td><td>₹9.60</td><td><span class="table-status complete">Completed</span></td></tr>
+                <tr><td>House C-118</td><td>House A-207</td><td>1.8 kWh</td><td>₹7.20</td><td><span class="table-status complete">Completed</span></td></tr>
+                <tr><td>Solar Hub</td><td>Community Hall</td><td>4.2 kWh</td><td>₹16.80</td><td><span class="table-status matched">Matched</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="panel impact-panel">
+          <div class="panel-header">
+            <div>
+              <span class="section-kicker">SUSTAINABILITY</span>
+              <h2>SDG impact</h2>
+              <p>Community outcomes</p>
+            </div>
+            <span class="impact-leaf" aria-hidden="true">♧</span>
+          </div>
+
+          <div class="impact-list">
+            <div class="impact-row"><span class="sdg-number">07</span><div><strong>Affordable & Clean Energy</strong><small>Renewable utilization</small></div><b id="sdgRenewable">91%</b></div>
+            <div class="impact-row"><span class="sdg-number">09</span><div><strong>Innovation & Infrastructure</strong><small>Microgrid stability</small></div><b id="sdgStability">98%</b></div>
+            <div class="impact-row"><span class="sdg-number">11</span><div><strong>Sustainable Communities</strong><small>Connected households</small></div><b>100</b></div>
+            <div class="impact-row"><span class="sdg-number">13</span><div><strong>Climate Action</strong><small>CO₂ avoided today</small></div><b>42 kg</b></div>
+          </div>
+        </article>
+      </section>
+
+      <section class="panel energy-flow-panel">
+        <div class="panel-header">
+          <div>
+            <span class="section-kicker">SYSTEM TOPOLOGY</span>
+            <h2>Live energy flow</h2>
+            <p>Real-time community infrastructure</p>
+          </div>
+          <span class="sync-status"><i></i> Synchronized</span>
+        </div>
+
+        <div class="flow" aria-label="Energy flow from solar through AI controller to battery and community">
+          <div class="flow-node">
+            <div class="flow-icon solar" aria-hidden="true">☀</div>
+            <strong>Solar farm</strong>
+            <span id="flowSolar">86 kW</span>
+          </div>
+          <div class="flow-connector"><span></span><b>›</b></div>
+          <div class="flow-node active-node">
+            <div class="flow-icon ai" aria-hidden="true">AI</div>
+            <strong>AI controller</strong>
+            <span>Optimizing</span>
+          </div>
+          <div class="flow-connector"><span></span><b>›</b></div>
+          <div class="flow-node">
+            <div class="flow-icon battery" aria-hidden="true">▰</div>
+            <strong>Battery</strong>
+            <span id="flowBattery">78%</span>
+          </div>
+          <div class="flow-connector"><span></span><b>›</b></div>
+          <div class="flow-node">
+            <div class="flow-icon demand" aria-hidden="true">⌂</div>
+            <strong>Community</strong>
+            <span id="flowDemand">72 kW</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="disclaimer">
+        <span>Prototype environment</span>
+        <p>All energy values, forecasts, recommendations and transactions are simulated for demonstration and educational purposes.</p>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>SMARTGRID AI · Operations dashboard v2.0</span>
+      <span>SDG 7 · 9 · 11 · 13</span>
+    </footer>
+  </div>
+
+  <script src="script.js" defer></script>
 </body>
 </html>
